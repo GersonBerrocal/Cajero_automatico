@@ -63,7 +63,20 @@ public class App {
 			
 			//opciones
 			do {
-				
+				boolean op=false;
+				op=ejecutar_opciones(opciones_cajero(sc),usuario_actual,sc);
+				if(op) {
+					System.out.println("Operacion realizada con exito");
+					System.out.println("¿Quieres realizar otra opcion ?  ");
+					System.out.println("1. Si");
+					System.out.println("2. No");
+					System.out.print("Elegir : ");
+					int op_reinicio=sc.nextInt();
+					if(op_reinicio==2)
+						break;
+				} else {
+					System.out.println("Opcion no valida;");
+				}
 			} while(true);
 			
 		} while(true);
