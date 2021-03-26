@@ -60,7 +60,7 @@ public class Usuario {
 		
 	}
 
-	public boolean transferir(int cuenta, float cantidad) {
+	public boolean transferir( float cantidad) {
 		if(verificar_retiro(cantidad) ) {
 			this.saldo -= cantidad;
 			return true;

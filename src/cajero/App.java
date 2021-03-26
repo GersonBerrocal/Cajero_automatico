@@ -176,8 +176,9 @@ public class App {
 			} else {
 				System.out.print("Ingrese la cantidad : ");
 				float cant=sc.nextFloat();
-				if(user.transferir(usuarios.get(id).getTarjeta(),cant) ){
+				if(user.transferir(cant) ){
 					usuarios.get(id).depositar(cant);
+					return true;
 				} else {
 					return false;
 				}
