@@ -6,56 +6,67 @@ public class App {
 	public static void main(String[] args){
 		Scanner sc=new Scanner(System.in);
 		
+		//Definiendo usuarios
+		ArrayList<Usuario> usuarios=new ArrayList<Usuario>();
+		usuarios.add(new Usuario(98765,"123a",506.3f,"Pedro"));
+		usuarios.add(new Usuario(12345, "123b",600.0f,"Maria"));
 		
-		ArrayList<Usuario> todos=new ArrayList<Usuario>();
-		todos.add(new Usuario(98765,"123a",506.3f,"Pedro"));
-		todos.add(new Usuario(12345, "123b",600.0f,"Maria"));
 		
 		
-		int num_tarjeta;
-		Usuario usuario_actual;
 		
-		int bloq_tarj=1;
+		
 		
 		do {
+			Usuario usuario_actual = null;
+			boolean reiniciar_ejecucion=false;
 		
 			System.out.print("Ingrese el número de tarjeta : ");
-			num_tarjeta=sc.nextInt();
-			for(int x=0;x<todos.size();x++) {
-				if(num_tarjeta==todos.get(x).num_tarjeta) {
-					usuario_actual=todos.get(x);
-					String contrasena="";
-					System.out.print("Ingrese la contraseña : ");
-					contrasena=sc.next();
-					if(contrasena.equals(usuario_actual.contrasena)) {
-						//ejecutar codigo si se encontro la tarjeta
-						boolean verificar_seleccion;
-						int opcion_elegida=0;
-						boolean verificar_ciclo=false;
-						do {
-							verificar_seleccion=ejecutar_opciones(opciones_cajero(sc),usuario_actual,sc);
-							if(verificar_seleccion) {
-								verificar_ciclo=false;
-							} else {
-								System.out.println("Opcion no valida");
-								verificar_ciclo=true;
-							}
-							
-						} while(verificar_ciclo);
-					} else {
-						System.out.println("Contraseña no valida");
-						bloq_tarj++;
-					}
-					
-					
-					
+			int num_tarjeta=sc.nextInt();
+			for(int x=0;x<usuarios.size();x++) {
+				if(num_tarjeta==usuarios.get(x).getTarjeta()) {
+					usuario_actual=usuarios.get(x);
 					break;
-				} else if(x==todos.size()-1){
-					bloq_tarj++;
+				} else  {
+					System.out.println("------------------");
+					System.out.println("¡Tarjeta invalida!");
+					System.out.println("------------------");
+					reiniciar_ejecucion=true;
+					break;
 				}
 			}
+			if(reiniciar_ejecucion)
+				continue;
 			
-		} while(bloq_tarj<=3);
+			int intentos=1;
+			do {
+				System.out.print("Ingrese la contraseña : ");
+				String contrasena=sc.next();
+				if(contrasena.equals(usuario_actual.getContrasena())) {
+					intentos=0;
+					break;
+				}else if(intentos==3) {
+					reiniciar_ejecucion=true;
+					System.out.println("-------------------------");
+					System.out.println("¡Fallaste los 3 intentos!");
+					System.out.println("-------------------------");
+					break;
+				} else {
+					intentos++;
+					System.out.println("---------------------");
+					System.out.println("¡Contraseña invalida!");
+					System.out.println("---------------------");
+				}
+			} while(true);
+			
+			if(reiniciar_ejecucion)
+				continue;
+			
+			//opciones
+			do {
+				
+			} while(true);
+			
+		} while(true);
 	}
 	
 	public static int opciones_cajero(Scanner sc) {
@@ -74,9 +85,9 @@ public class App {
 	public static boolean ejecutar_opciones(int op,Usuario user,Scanner sc) {
 		switch (op) {
 		case 1:
-			System.out.print("Usuario : "+user.nombre);
+			System.out.print("Usuario : "+user.getNombre());
 			System.out.println("");
-			System.out.print("El saldo actual es de : "+user.ver_saldo());
+			System.out.print("El saldo actual es de : "+user.getSaldo());
 			System.out.println("");
 			break;
 		case 2:
@@ -84,10 +95,10 @@ public class App {
 			System.out.print("Cantidad a retirar : ");
 			retiro=sc.nextFloat();
 			
-			System.out.print("Usuario : "+user.nombre);
+			System.out.print("Usuario : "+user.getNombre());
 			System.out.println("");
 			user.retirar(retiro);
-			System.out.print("El saldo actual es de : "+user.ver_saldo());
+			System.out.print("El saldo actual es de : "+user.getSaldo());
 			System.out.println("");
 			break;
 		default:
