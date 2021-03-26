@@ -13,9 +13,6 @@ public class App {
 		
 		
 		
-		
-		
-		
 		do {
 			Usuario usuario_actual = null;
 			boolean reiniciar_ejecucion=false;
@@ -63,29 +60,39 @@ public class App {
 			
 			//opciones
 			do {
-				boolean op=false;
-				op=ejecutar_opciones(opciones_cajero(sc),usuario_actual,sc);
-				if(op) {
+				int op=opciones_cajero(sc);
+				boolean ejecucion=ejecutar_opciones(op,usuario_actual,sc);
+				if(ejecucion) {
+					System.out.println("-----------------------------");
 					System.out.println("Operacion realizada con exito");
+					System.out.println("-----------------------------");
 					System.out.println("¿Quieres realizar otra opcion ?  ");
 					System.out.println("1. Si");
 					System.out.println("2. No");
 					System.out.print("Elegir : ");
 					int op_reinicio=sc.nextInt();
-					if(op_reinicio==2)
+					if(op_reinicio==2) {
+						System.out.println("Sesion finalizada");
 						break;
+					}
+				} else if(!ejecucion && op==5) {
+					System.out.println("Sesion finalizada");
+					break;
 				} else {
-					System.out.println("Opcion no valida;");
+					System.out.print("Opcion no valida");
 				}
 			} while(true);
-			
 		} while(true);
 	}
 	
+
 	public static int opciones_cajero(Scanner sc) {
+		System.out.println("");
 		System.out.println("OPERACIONES");
 		System.out.println("1. Consultar saldo");
-		System.out.println("2. Retirar");
+		System.out.println("2. Deposito");
+		System.out.println("3. Retiro");
+		System.out.println("5. Salir");
 		System.out.print("Que operacion quieres realizar : ");
 		int op=sc.nextInt();
 		
@@ -98,22 +105,28 @@ public class App {
 	public static boolean ejecutar_opciones(int op,Usuario user,Scanner sc) {
 		switch (op) {
 		case 1:
-			System.out.print("Usuario : "+user.getNombre());
 			System.out.println("");
-			System.out.print("El saldo actual es de : "+user.getSaldo());
+			System.out.println("Usuario : "+user.getNombre());
+			System.out.println("El saldo actual es de : "+user.getSaldo());
 			System.out.println("");
 			break;
 		case 2:
+			System.out.println("Ingrese la cantidad : ");
+			float cantidad=sc.nextFloat();
+			user.depositar(cantidad);
+			System.out.println("Usuario : "+user.getNombre());
+			System.out.println("Saldo : "+user.getSaldo());
+			break;
+		case 3:
 			float retiro;
 			System.out.print("Cantidad a retirar : ");
 			retiro=sc.nextFloat();
-			
-			System.out.print("Usuario : "+user.getNombre());
-			System.out.println("");
+			System.out.println("Usuario : "+user.getNombre());
 			user.retirar(retiro);
-			System.out.print("El saldo actual es de : "+user.getSaldo());
-			System.out.println("");
+			System.out.println("Saldo : "+user.getSaldo());
 			break;
+		case 5:
+			return false;
 		default:
 			return false;
 		}
