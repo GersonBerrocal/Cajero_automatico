@@ -49,15 +49,39 @@ public class Usuario {
 
 	// Metodos de usuario
 
-	public void retirar(float cantidad_retirada) {
-		this.saldo = this.saldo - cantidad_retirada;
+	public boolean retirar(float cantidad_retirada) {
+		if(verificar_retiro(cantidad_retirada) && verificar_billetes(cantidad_retirada)) {
+			this.saldo -= cantidad_retirada;
+			return true;
+		}else {
+			return false;
+		}
+			
+		
 	}
 
-	public void transferir(int cuenta, float cantidad) {
-		this.saldo -= cantidad;
+	public boolean transferir(int cuenta, float cantidad) {
+		if(verificar_retiro(cantidad) ) {
+			this.saldo -= cantidad;
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	public void depositar(float cantidad) {
 		this.saldo += cantidad;
+	}
+	public boolean verificar_retiro(float cantidad) {
+		if(cantidad>this.saldo || cantidad<0)
+			return false;
+		else
+			return true;
+	}
+	public boolean verificar_billetes(float cantidad) {
+		if(cantidad%10==0)
+			return true;
+		else
+			return false;
 	}
 }

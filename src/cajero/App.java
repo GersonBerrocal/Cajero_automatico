@@ -13,24 +13,22 @@ public class App {
 		
 		
 		
-		do {
+		while(true) {
 			Usuario usuario_actual = null;
 			boolean reiniciar_ejecucion=false;
 		
 			System.out.print("Ingrese el número de tarjeta : ");
 			int num_tarjeta=sc.nextInt();
-			for(int x=0;x<usuarios.size();x++) {
-				if(num_tarjeta==usuarios.get(x).getTarjeta()) {
-					usuario_actual=usuarios.get(x);
-					break;
-				} else  {
-					System.out.println("------------------");
-					System.out.println("¡Tarjeta invalida!");
-					System.out.println("------------------");
-					reiniciar_ejecucion=true;
-					break;
-				}
+			int indice_usuario=verificar_tarjeta(num_tarjeta,usuarios);
+			if(indice_usuario==-1) {
+				System.out.println("------------------");
+				System.out.println("¡Tarjeta invalida!");
+				System.out.println("------------------");
+				reiniciar_ejecucion=true;
+			} else {
+				usuario_actual=usuarios.get(indice_usuario);
 			}
+			
 			if(reiniciar_ejecucion)
 				continue;
 			
@@ -60,38 +58,72 @@ public class App {
 			
 			//opciones
 			do {
+				boolean terminar_opciones=false;
 				int op=opciones_cajero(sc);
-				boolean ejecucion=ejecutar_opciones(op,usuario_actual,sc);
+				boolean ejecucion=ejecutar_opciones(op,usuario_actual,sc,usuarios);
 				if(ejecucion) {
 					System.out.println("-----------------------------");
 					System.out.println("Operacion realizada con exito");
 					System.out.println("-----------------------------");
 					System.out.println("¿Quieres realizar otra opcion ?  ");
-					System.out.println("1. Si");
-					System.out.println("2. No");
-					System.out.print("Elegir : ");
-					int op_reinicio=sc.nextInt();
-					if(op_reinicio==2) {
-						System.out.println("Sesion finalizada");
-						break;
-					}
-				} else if(!ejecucion && op==5) {
+					
+					do {
+						
+						System.out.println("1. Si");
+						System.out.println("2. No");
+						System.out.print("Elegir : ");
+						int op_reinicio=sc.nextInt();
+						if(op_reinicio==2) {
+							System.out.println("Sesion finalizada");
+							terminar_opciones=true;
+							break;
+						} else if(op_reinicio!=1) {
+							System.out.println("Opcion invalida, elija una opcion ");
+						} else {
+							break;
+						}
+					} while(true);
+					
+				}else if(!ejecucion && op==3) {
+					System.out.println("");
+					System.out.println("Error : Verifique la cantidad");
+					System.out.println("Billetes disponibles : 10,20,50,100");
+				} else if(!ejecucion && op==4) {
+					System.out.println("");
+					System.out.println("Error verifique tu saldo o cantidad o cuenta");
+				}  else if(!ejecucion && op==5) {
 					System.out.println("Sesion finalizada");
 					break;
 				} else {
 					System.out.print("Opcion no valida");
 				}
+				if(terminar_opciones)
+					break;
 			} while(true);
-		} while(true);
+		} 
 	}
 	
-
+	public static int verificar_tarjeta(int tarjeta,ArrayList<Usuario> usuarios) {
+		int indice_usuario=0;
+		for(int x=0;x<usuarios.size();x++) {
+			if(tarjeta==usuarios.get(x).getTarjeta()) {
+				indice_usuario=x;
+				break;
+			} else if(x==usuarios.size()-1) {
+				indice_usuario=-1;
+				break;
+			}
+		}
+		return indice_usuario;
+		
+	}
 	public static int opciones_cajero(Scanner sc) {
 		System.out.println("");
 		System.out.println("OPERACIONES");
 		System.out.println("1. Consultar saldo");
 		System.out.println("2. Deposito");
 		System.out.println("3. Retiro");
+		System.out.println("4. Transferencia");
 		System.out.println("5. Salir");
 		System.out.print("Que operacion quieres realizar : ");
 		int op=sc.nextInt();
@@ -102,7 +134,7 @@ public class App {
 		}
 		return op;
 	}
-	public static boolean ejecutar_opciones(int op,Usuario user,Scanner sc) {
+	public static boolean ejecutar_opciones(int op,Usuario user,Scanner sc,ArrayList<Usuario> usuarios) {
 		switch (op) {
 		case 1:
 			System.out.println("");
@@ -119,12 +151,38 @@ public class App {
 			break;
 		case 3:
 			float retiro;
+			System.out.println("Billetes disponibles : 10,20,50,100 ");
 			System.out.print("Cantidad a retirar : ");
 			retiro=sc.nextFloat();
-			System.out.println("Usuario : "+user.getNombre());
-			user.retirar(retiro);
-			System.out.println("Saldo : "+user.getSaldo());
-			break;
+			if(user.retirar(retiro)) {
+				System.out.println("Usuario : "+user.getNombre());
+				System.out.println("Saldo : "+user.getSaldo());
+				break;
+			} else {
+				return false;
+			}
+			
+		case 4:
+			System.out.print("Cuenta a depositar : ");
+			int cuenta=sc.nextInt();
+			int id=verificar_tarjeta(cuenta,usuarios);
+			if(id==-1) {
+				System.out.println("La cuenta ingresada no existe");
+				return false;
+			}else if(user.getTarjeta()==usuarios.get(id).getTarjeta()) {
+				System.out.println("");
+				System.out.print("No se puede transferir a la misma cuenta");
+				return false;
+			} else {
+				System.out.print("Ingrese la cantidad : ");
+				float cant=sc.nextFloat();
+				if(user.transferir(usuarios.get(id).getTarjeta(),cant) ){
+					usuarios.get(id).depositar(cant);
+				} else {
+					return false;
+				}
+				
+			}	
 		case 5:
 			return false;
 		default:
