@@ -49,6 +49,7 @@ public class App {
 					intentos++;
 					System.out.println("---------------------");
 					System.out.println("¡Contraseña invalida!");
+					System.out.println("Intentos restantes : "+(4-intentos));
 					System.out.println("---------------------");
 				}
 			} while(true);
@@ -57,7 +58,7 @@ public class App {
 				continue;
 			
 			//opciones
-			do {
+			while(true) {
 				boolean terminar_opciones=false;
 				int op=opciones_cajero(sc);
 				boolean ejecucion=ejecutar_opciones(op,usuario_actual,sc,usuarios);
@@ -67,7 +68,7 @@ public class App {
 					System.out.println("-----------------------------");
 					System.out.println("¿Quieres realizar otra opcion ?  ");
 					
-					do {
+					while(true) {
 						
 						System.out.println("1. Si");
 						System.out.println("2. No");
@@ -82,7 +83,7 @@ public class App {
 						} else {
 							break;
 						}
-					} while(true);
+					} 
 					
 				}else if(!ejecucion && op==3) {
 					System.out.println("");
@@ -99,7 +100,7 @@ public class App {
 				}
 				if(terminar_opciones)
 					break;
-			} while(true);
+			} 
 		} 
 	}
 	
