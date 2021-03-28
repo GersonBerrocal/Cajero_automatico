@@ -162,7 +162,7 @@ public class App {
 			System.out.println("Billetes disponibles : 10,20,50,100 ");
 			System.out.print("Cantidad a retirar : ");
 			retiro=sc.nextFloat();
-			if(user.retirar(retiro)) {
+			if(user.retirar(retiro) && retiro>=10) {
 				par=new String[] {"Operacion","Retiro","Monto",""+retiro,"Saldo",""+user.getSaldo()};
 				vaucher(user,par);
 				break;
@@ -184,7 +184,7 @@ public class App {
 			} else {
 				System.out.print("Ingrese la cantidad : ");
 				float cant=sc.nextFloat();
-				if(user.transferir(cant) ){
+				if(user.transferir(cant) && cant>10){
 					Usuario usuario_transf=usuarios.get(id);
 					usuario_transf.depositar(cant);
 					par=new String[] {"Operacion","Transferencia","Cuenta destino",usuario_transf.getTarjeta()+"",
