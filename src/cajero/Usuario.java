@@ -1,10 +1,12 @@
 package cajero;
+import java.text.DecimalFormat;
 
 public class Usuario {
 	private String nombre;
 	private int tarjeta;
 	private float saldo;
 	private String contrasena;
+	DecimalFormat formateador = new DecimalFormat("####.##");
 
 	public float getSaldo() {
 		return this.saldo;
@@ -51,7 +53,7 @@ public class Usuario {
 
 	public boolean retirar(float cantidad_retirada) {
 		if(verificar_retiro(cantidad_retirada) && verificar_billetes(cantidad_retirada)) {
-			this.saldo -= cantidad_retirada;
+			this.saldo = Float.parseFloat(formateador.format(this.saldo-cantidad_retirada));
 			return true;
 		}else {
 			return false;
@@ -62,7 +64,7 @@ public class Usuario {
 
 	public boolean transferir( float cantidad) {
 		if(verificar_retiro(cantidad) ) {
-			this.saldo -= cantidad;
+			this.saldo =Float.parseFloat(formateador.format(this.saldo-cantidad)) ;
 			return true;
 		}else {
 			return false;
