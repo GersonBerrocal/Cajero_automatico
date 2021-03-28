@@ -139,7 +139,7 @@ public class App {
 		
 		switch (op) {
 		case 1:
-			par=new String[] {"Operacion","Consulta","Saldo : ",""+user.getSaldo()};
+			par=new String[] {"Operacion","Consulta","Saldo ",""+user.getSaldo()};
 			vaucher(user,par);
 			break;
 		case 2:
@@ -179,8 +179,8 @@ public class App {
 				if(user.transferir(cant) ){
 					Usuario usuario_transf=usuarios.get(id);
 					usuario_transf.depositar(cant);
-					par=new String[] {"Operacion","Transferencia","Cuenta a transferir",usuario_transf.getTarjeta()+"",
-							"Monto",cant+""};
+					par=new String[] {"Operacion","Transferencia","Cuenta destino",usuario_transf.getTarjeta()+"",
+							"Monto",cant+"","Saldo",user.getSaldo()+""};
 					vaucher(user,par);
 					return true;
 				} else {
@@ -195,13 +195,14 @@ public class App {
 		return true;
 	}
 	public static void vaucher(Usuario usuario,String[] pares) {
+		String patron="%-12s : %-20s";
 		System.out.println("");
-		System.out.println("***********");
-		System.out.println("VOUCHER");
-		System.out.println("**********");
-		System.out.println("Usuario : "+usuario.getNombre());
+		System.out.println("*************");
+		System.out.println("---VAUCHER---");
+		System.out.println("*************");
+		System.out.println(String.format(patron,"Usuario",usuario.getNombre()));
 		for(int i=0;i<pares.length;) {
-			System.out.println(pares[i]+" : "+pares[i+1]);
+			System.out.println(String.format(patron,pares[i],pares[i+1]));
 			i+=2;
 		}
 		
