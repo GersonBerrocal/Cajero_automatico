@@ -96,7 +96,9 @@ public class App {
 					System.out.println("Sesion finalizada");
 					break;
 				} else {
-					System.out.print("Opcion no valida");
+					System.out.println("----------------");
+					System.out.println("Opcion no valida");
+					System.out.println("----------------");
 				}
 				if(terminar_opciones)
 					break;
@@ -129,26 +131,23 @@ public class App {
 		System.out.print("Que operacion quieres realizar : ");
 		int op=sc.nextInt();
 		
-		if(op<0 && op>3) {
-			System.out.print("Opcion no valida");
-			return -1;
-		}
+		op=(op<0 && op>3)?-1:op;
 		return op;
 	}
 	public static boolean ejecutar_opciones(int op,Usuario user,Scanner sc,ArrayList<Usuario> usuarios) {
+		String par[];
+		
 		switch (op) {
 		case 1:
-			System.out.println("");
-			System.out.println("Usuario : "+user.getNombre());
-			System.out.println("El saldo actual es de : "+user.getSaldo());
-			System.out.println("");
+			par=new String[] {"Operacion","Consulta","Saldo : ",""+user.getSaldo()};
+			vaucher(user,par);
 			break;
 		case 2:
 			System.out.println("Ingrese la cantidad : ");
 			float cantidad=sc.nextFloat();
 			user.depositar(cantidad);
-			System.out.println("Usuario : "+user.getNombre());
-			System.out.println("Saldo : "+user.getSaldo());
+			par=new String[] {"Operacion","Deposito","Monto",cantidad+"","Saldo",user.getSaldo()+""};
+			vaucher(user,par);
 			break;
 		case 3:
 			float retiro;
@@ -156,8 +155,8 @@ public class App {
 			System.out.print("Cantidad a retirar : ");
 			retiro=sc.nextFloat();
 			if(user.retirar(retiro)) {
-				System.out.println("Usuario : "+user.getNombre());
-				System.out.println("Saldo : "+user.getSaldo());
+				par=new String[] {"Operacion","Retiro","Monto",""+retiro,"Saldo",""+user.getSaldo()};
+				vaucher(user,par);
 				break;
 			} else {
 				return false;
@@ -178,12 +177,15 @@ public class App {
 				System.out.print("Ingrese la cantidad : ");
 				float cant=sc.nextFloat();
 				if(user.transferir(cant) ){
-					usuarios.get(id).depositar(cant);
+					Usuario usuario_transf=usuarios.get(id);
+					usuario_transf.depositar(cant);
+					par=new String[] {"Operacion","Transferencia","Cuenta a transferir",usuario_transf.getTarjeta()+"",
+							"Monto",cant+""};
+					vaucher(user,par);
 					return true;
 				} else {
 					return false;
 				}
-				
 			}	
 		case 5:
 			return false;
@@ -191,5 +193,17 @@ public class App {
 			return false;
 		}
 		return true;
+	}
+	public static void vaucher(Usuario usuario,String[] pares) {
+		System.out.println("");
+		System.out.println("***********");
+		System.out.println("VOUCHER");
+		System.out.println("**********");
+		System.out.println("Usuario : "+usuario.getNombre());
+		for(int i=0;i<pares.length;) {
+			System.out.println(pares[i]+" : "+pares[i+1]);
+			i+=2;
+		}
+		
 	}
 }
