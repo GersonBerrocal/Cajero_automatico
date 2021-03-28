@@ -1,5 +1,6 @@
 package cajero;
 import cajero.Usuario;
+import javax.swing.JOptionPane;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.text.DateFormat;
@@ -15,22 +16,23 @@ public class App {
 		usuarios.add(new Usuario(12345, "123b",600.0f,"Maria"));
 		
 		
-		
+		boolean reintento=false;
 		while(true) {
 			Usuario usuario_actual = null;
 			boolean reiniciar_ejecucion=false;
 		
-			System.out.print("Ingrese el número de tarjeta : ");
-			int num_tarjeta=sc.nextInt();
+			int num_tarjeta=0;
+			
+			String mostrar_panel=(reintento)?"NÚMERO DE TARJETA \n¡Tarjeta invalida!":"NÚMERO DE TARJETA";
+			String numero_panel=JOptionPane.showInputDialog(null, mostrar_panel,"",JOptionPane.PLAIN_MESSAGE);
+			num_tarjeta=(numero_panel==null)?null:Integer.parseInt(numero_panel);
 			int indice_usuario=verificar_tarjeta(num_tarjeta,usuarios);
 			if(indice_usuario==-1) {
-				System.out.println("------------------");
-				System.out.println("¡Tarjeta invalida!");
-				System.out.println("------------------");
-				System.out.println("");
+				reintento=true;
 				reiniciar_ejecucion=true;
 			} else {
 				usuario_actual=usuarios.get(indice_usuario);
+				reintento=false;
 			}
 			
 			if(reiniciar_ejecucion)
@@ -38,24 +40,17 @@ public class App {
 			
 			int intentos=1;
 			do {
-				System.out.print("Ingrese la contraseña : ");
-				String contrasena=sc.next();
+				mostrar_panel=(intentos<=3 && intentos>1)?"CONTRASEÑA \n¡Contraseña equivocada! \nintentos restantes : "+(4-intentos):"CONTRASEÑA";
+				String contrasena=JOptionPane.showInputDialog(null, mostrar_panel,"",JOptionPane.PLAIN_MESSAGE);;
+				contrasena=(contrasena==null)?null:contrasena;
 				if(contrasena.equals(usuario_actual.getContrasena())) {
 					intentos=1;
 					break;
 				}else if(intentos==3) {
 					reiniciar_ejecucion=true;
-					System.out.println("-------------------------");
-					System.out.println("¡Fallaste los 3 intentos!");
-					System.out.println("-------------------------");
-					System.out.println("");
 					break;
 				} else {
 					intentos++;
-					System.out.println("---------------------");
-					System.out.println("¡Contraseña invalida!");
-					System.out.println("Intentos restantes : "+(4-intentos));
-					System.out.println("---------------------");
 				}
 			} while(true);
 			
