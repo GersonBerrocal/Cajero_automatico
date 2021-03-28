@@ -27,6 +27,7 @@ public class App {
 				System.out.println("------------------");
 				System.out.println("¡Tarjeta invalida!");
 				System.out.println("------------------");
+				System.out.println("");
 				reiniciar_ejecucion=true;
 			} else {
 				usuario_actual=usuarios.get(indice_usuario);
@@ -47,6 +48,7 @@ public class App {
 					System.out.println("-------------------------");
 					System.out.println("¡Fallaste los 3 intentos!");
 					System.out.println("-------------------------");
+					System.out.println("");
 					break;
 				} else {
 					intentos++;
@@ -72,6 +74,7 @@ public class App {
 				System.out.println("5. Salir");
 				System.out.print("Que operacion quieres realizar : ");
 				int op=sc.nextInt();
+				System.out.println("");
 				
 				op=(op<0 && op>3)?-1:op;
 				
@@ -90,7 +93,9 @@ public class App {
 						System.out.print("Elegir : ");
 						int op_reinicio=sc.nextInt();
 						if(op_reinicio==2) {
+							System.out.println("-----------------");
 							System.out.println("Sesion finalizada");
+							System.out.println("-----------------");
 							terminar_opciones=true;
 							break;
 						} else if(op_reinicio!=1) {
@@ -100,17 +105,21 @@ public class App {
 						}
 					} 
 					
-				} else if(!ejecucion && op==2) {
+				} else if(!ejecucion && op==2) { // todos los else siguientes es para manejo de errores
+					System.out.println("");
 					System.out.println("Error : la cantidad debe ser mayor igual a 10");
 				}else if(!ejecucion && op==3) {
 					System.out.println("");
-					System.out.println("Error : Verifique la cantidad");
+					System.out.println("Error : Verificar la cantidad");
+					System.out.println("Debe ser mayor de 10 y menor al saldo disponible");
 					System.out.println("Billetes disponibles : 10,20,50,100");
 				} else if(!ejecucion && op==4) {
-					System.out.println("");
-					System.out.println("Error verifique tu saldo o cantidad o cuenta");
+//					System.out.println("Error : Verificar la cantidad");
+//					System.out.println("Debe ser mayor de 10 y menor al saldo disponible");
 				}  else if(!ejecucion && op==5) {
+					System.out.println("-----------------");
 					System.out.println("Sesion finalizada");
+					System.out.println("-----------------");
 					break;
 				} else {
 					System.out.println("----------------");
@@ -159,6 +168,7 @@ public class App {
 			break;
 		case 3:
 			float retiro;
+
 			System.out.println("Billetes disponibles : 10,20,50,100 ");
 			System.out.print("Cantidad a retirar : ");
 			retiro=sc.nextFloat();
@@ -175,11 +185,13 @@ public class App {
 			int cuenta=sc.nextInt();
 			int id=verificar_tarjeta(cuenta,usuarios);
 			if(id==-1) {
-				System.out.println("La cuenta ingresada no existe");
+				System.out.println("");
+				System.out.println("Error : La cuenta ingresada no existe");
 				return false;
 			}else if(user.getTarjeta()==usuarios.get(id).getTarjeta()) {
 				System.out.println("");
-				System.out.print("No se puede transferir a la misma cuenta");
+				System.out.print("Error : No se puede transferir a la misma cuenta");
+				System.out.print("");
 				return false;
 			} else {
 				System.out.print("Ingrese la cantidad : ");
@@ -192,6 +204,9 @@ public class App {
 					vaucher(user,par);
 					return true;
 				} else {
+					System.out.println("");
+					System.out.println("Error : verifique la cantidad");
+					System.out.println("Debe ser mayor a 10 y menor a tu saldo actual");
 					return false;
 				}
 			}	
@@ -205,7 +220,7 @@ public class App {
 	public static void vaucher(Usuario usuario,String[] pares) {
 		String patron="%-12s : %-20s";
 		Date date=new Date();
-		DateFormat formato_fecha = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+		DateFormat formato_fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		System.out.println("");
 		System.out.println("*************");
 		System.out.println("---VAUCHER---");
@@ -216,6 +231,7 @@ public class App {
 			System.out.println(String.format(patron,pares[i],pares[i+1]));
 			i+=2;
 		}
+		System.out.println("");
 		
 	}
 }
