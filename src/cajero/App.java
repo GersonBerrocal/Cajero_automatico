@@ -66,6 +66,7 @@ public class App {
 					System.out.println("-----------------------------");
 					System.out.println("Operacion realizada con exito");
 					System.out.println("-----------------------------");
+					System.out.println("");
 					System.out.println("¿Quieres realizar otra opcion ?  ");
 					
 					while(true) {
@@ -85,6 +86,8 @@ public class App {
 						}
 					} 
 					
+				} else if(!ejecucion && op==2) {
+					System.out.println("Error : la cantidad debe ser mayor igual a 10");
 				}else if(!ejecucion && op==3) {
 					System.out.println("");
 					System.out.println("Error : Verifique la cantidad");
@@ -143,11 +146,15 @@ public class App {
 			vaucher(user,par);
 			break;
 		case 2:
-			System.out.println("Ingrese la cantidad : ");
+			System.out.print("Ingrese la cantidad : ");
 			float cantidad=sc.nextFloat();
-			user.depositar(cantidad);
-			par=new String[] {"Operacion","Deposito","Monto",cantidad+"","Saldo",user.getSaldo()+""};
-			vaucher(user,par);
+			if(cantidad>=10) {
+				user.depositar(cantidad);
+				par=new String[] {"Operacion","Deposito","Monto",cantidad+"","Saldo",user.getSaldo()+""};
+				vaucher(user,par);
+			} else
+				return false;
+			
 			break;
 		case 3:
 			float retiro;
