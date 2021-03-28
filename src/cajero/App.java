@@ -2,6 +2,9 @@ package cajero;
 import cajero.Usuario;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 public class App {
 	public static void main(String[] args){
 		Scanner sc=new Scanner(System.in);
@@ -37,7 +40,7 @@ public class App {
 				System.out.print("Ingrese la contraseña : ");
 				String contrasena=sc.next();
 				if(contrasena.equals(usuario_actual.getContrasena())) {
-					intentos=0;
+					intentos=1;
 					break;
 				}else if(intentos==3) {
 					reiniciar_ejecucion=true;
@@ -60,7 +63,18 @@ public class App {
 			//opciones
 			while(true) {
 				boolean terminar_opciones=false;
-				int op=opciones_cajero(sc);
+				System.out.println("");
+				System.out.println("OPERACIONES");
+				System.out.println("1. Consultar saldo");
+				System.out.println("2. Deposito");
+				System.out.println("3. Retiro");
+				System.out.println("4. Transferencia");
+				System.out.println("5. Salir");
+				System.out.print("Que operacion quieres realizar : ");
+				int op=sc.nextInt();
+				
+				op=(op<0 && op>3)?-1:op;
+				
 				boolean ejecucion=ejecutar_opciones(op,usuario_actual,sc,usuarios);
 				if(ejecucion) {
 					System.out.println("-----------------------------");
@@ -123,20 +137,7 @@ public class App {
 		return indice_usuario;
 		
 	}
-	public static int opciones_cajero(Scanner sc) {
-		System.out.println("");
-		System.out.println("OPERACIONES");
-		System.out.println("1. Consultar saldo");
-		System.out.println("2. Deposito");
-		System.out.println("3. Retiro");
-		System.out.println("4. Transferencia");
-		System.out.println("5. Salir");
-		System.out.print("Que operacion quieres realizar : ");
-		int op=sc.nextInt();
-		
-		op=(op<0 && op>3)?-1:op;
-		return op;
-	}
+
 	public static boolean ejecutar_opciones(int op,Usuario user,Scanner sc,ArrayList<Usuario> usuarios) {
 		String par[];
 		
@@ -203,11 +204,14 @@ public class App {
 	}
 	public static void vaucher(Usuario usuario,String[] pares) {
 		String patron="%-12s : %-20s";
+		Date date=new Date();
+		DateFormat formato_fecha = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 		System.out.println("");
 		System.out.println("*************");
 		System.out.println("---VAUCHER---");
 		System.out.println("*************");
 		System.out.println(String.format(patron,"Usuario",usuario.getNombre()));
+		System.out.println(String.format(patron,"Fecha y hora",formato_fecha.format(date)));
 		for(int i=0;i<pares.length;) {
 			System.out.println(String.format(patron,pares[i],pares[i+1]));
 			i+=2;
