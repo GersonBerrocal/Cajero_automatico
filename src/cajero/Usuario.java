@@ -55,13 +55,17 @@ public class Usuario {
 		if(verificar_retiro(cantidad_retirada) && verificar_billetes(cantidad_retirada)) {
 			this.saldo = Float.parseFloat(formateador.format(this.saldo-cantidad_retirada));
 			return true;
-		}else {
-			return false;
 		}
-			
-		
+		return false;
 	}
-
+	public boolean retirar_general(float cantidad_retirada) {
+		if(verificar_retiro(cantidad_retirada)) {
+			this.saldo = Float.parseFloat(formateador.format(this.saldo-cantidad_retirada));
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean transferir( float cantidad) {
 		if(verificar_retiro(cantidad) ) {
 			this.saldo =Float.parseFloat(formateador.format(this.saldo-cantidad)) ;

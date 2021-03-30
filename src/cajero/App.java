@@ -67,11 +67,12 @@ public class App {
 				boolean terminar_opciones=false;
 				System.out.println("");
 				System.out.println("OPERACIONES");
-				System.out.println("1. Consultar saldo");
-				System.out.println("2. Deposito");
-				System.out.println("3. Retiro");
-				System.out.println("4. Transferencia");
-				System.out.println("5. Salir");
+				System.out.println("[1] Consultar saldo");
+				System.out.println("[2] Deposito");
+				System.out.println("[3] Retiro");
+				System.out.println("[4] Transferencia");
+				System.out.println("[5] Pago de servicio");
+				System.out.println("[6] Salir");
 				System.out.print("Que operacion quieres realizar : ");
 				int op=sc.nextInt();
 				System.out.println("");
@@ -116,7 +117,7 @@ public class App {
 				} else if(!ejecucion && op==4) {
 //					System.out.println("Error : Verificar la cantidad");
 //					System.out.println("Debe ser mayor de 10 y menor al saldo disponible");
-				}  else if(!ejecucion && op==5) {
+				}  else if(!ejecucion && op==6) {
 					System.out.println("-----------------");
 					System.out.println("Sesion finalizada");
 					System.out.println("-----------------");
@@ -209,8 +210,38 @@ public class App {
 					System.out.println("Debe ser mayor a 10 y menor a tu saldo actual");
 					return false;
 				}
-			}	
+			}
 		case 5:
+			//pagar servicio
+			System.out.println("[1] Agua");
+			System.out.println("[2] Luz");
+			System.out.print("Que servicio quieres pagar : ");
+			int servicio=sc.nextInt();
+			if(servicio<0 || servicio>2) {
+				System.out.println("Servicio no valido");
+				return false;
+			}
+			String nombre_servicio=(servicio==1)?"Agua":"Luz";
+			float deuda_aletoria =(float) Math.floor(Math.random()*(100-10+1)+10);
+			System.out.println("La deuda es : "+deuda_aletoria);
+			System.out.print("Deseas pagar el servicio [1]Si [2]No: ");
+			int el=sc.nextInt();
+			if(el==2) {
+				System.out.println("No se realizo el pago");
+				return false;
+			} else if(el!=1) {
+				System.out.println("Opcion no valida, no se realizo el pago");
+				return false;
+			}
+			boolean res=user.retirar_general(deuda_aletoria);
+			if(!res) {
+				System.out.println("Saldo insuficiente, deuda "+deuda_aletoria+" no pagada");
+				return false;
+			}
+			par=new String[]{"Operacion","Pago de servicio","Servicio",nombre_servicio,"Monto",deuda_aletoria+"","Saldo",user.getSaldo()+"",};
+			vaucher(user,par);
+			return true;
+		case 6:
 			return false;
 		default:
 			return false;
