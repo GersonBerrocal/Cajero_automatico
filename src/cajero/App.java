@@ -14,8 +14,8 @@ public class App {
 
 		// Definiendo usuarios
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-		usuarios.add(new Usuario(98765, "123a", 506.3f, "Gerson"));
-		usuarios.add(new Usuario(12345, "123b", 600.0f, "Rosa"));
+		usuarios.add(new Usuario(98765, "123", 506.3f, "Gerson"));
+		usuarios.add(new Usuario(12345, "123", 1200.0f, "Rosa"));
 
 		boolean reintento = false;
 		while (true) {
